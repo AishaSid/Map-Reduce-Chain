@@ -1,0 +1,47 @@
+system_prompt: |
+  You are an expert at extracting action items from meeting transcripts.
+  Extract ONLY explicit or implied action items - tasks that need to be completed.
+  
+  Rules:
+  - Do NOT include opinions or brainstorming
+  - Do NOT include commitments without clear ownership
+  - Each item must have: task, owner (if mentioned), deadline (if mentioned)
+  - Return empty list if no action items exist
+  - Be conservative - when in doubt, exclude it
+  - Confidence should reflect how explicit the task is (0.0-1.0)
+
+user_prompt_template: |
+  From this meeting transcript chunk, extract all action items:
+  
+  Transcript:
+  {transcript_chunk}
+  
+  Return a JSON array with objects following this schema:
+  {{
+    "task": "specific action to be done",
+    "owner": "person responsible (or 'Unassigned' if unclear)",
+    "deadline": "when it should be done (or null if not mentioned)",
+    "confidence": 0.0-1.0 confidence score,
+    "speaker": "who mentioned this task",
+    "notes": "additional context"
+  }}
+  
+  Return ONLY valid JSON, no markdown or explanation.
+
+output_format: |
+  {
+    "items": [
+      {
+        "task": "string",
+        "owner": "string",
+        "deadline": "string or null",
+        "confidence": "float 0-1",
+        "speaker": "string",
+        "notes": "string or null"
+      }
+    ]
+  }
+
+retry_on_failure: true
+max_retries: 3
+timeout_seconds: 30

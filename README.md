@@ -18,33 +18,25 @@ Built a multi-stage Map–Reduce LLM pipeline using LangChain to extract and val
 
 ## 📁 Project Structure
 
-```
+```bash
 Map-Reduce-Chain/
-├── src/                          # Source code
-│   ├── __init__.py
-│   ├── config.py                 # Configuration management
-│   ├── models.py                 # Pydantic models (ActionItem schema)
-│   ├── transcript_processor.py   # Transcript ingestion & chunking
-│   ├── map_phase.py              # MAP: Extract action items
-│   ├── reduce_phase.py           # REDUCE: Consolidate & deduplicate
-│   ├── confidence_scorer.py      # Confidence scoring layer
-│   ├── validation.py             # Edge case handling & validation
-│   └── main.py                   # Orchestration logic
-├── tests/                        # Unit & integration tests
-│   ├── __init__.py
-│   ├── test_map_phase.py
-│   ├── test_reduce_phase.py
-│   ├── test_confidence_scorer.py
-│   └── test_validation.py
-├── data/                         # Data folder
-│   ├── transcripts/              # Sample transcripts
-│   └── outputs/                  # Generated action items
-├── notebooks/                    # Exploration & demos
-│   └── exploration.ipynb
-├── requirements.txt              # Project dependencies
-├── .gitignore                    # Git ignore rules
-├── .env.example                  # Environment template
-└── README.md                     # This file
+├── src/
+│   ├── config.py
+│   ├── models.py                 # Pydantic schemas
+│   ├── document_loader.py        # LangChain Documents + metadata
+│   ├── map_chain.py              # MAP chain (Prompt + LLM + Parser)
+│   ├── reduce_chain.py           # REDUCE chain
+│   ├── confidence_chain.py       # Confidence scoring chain
+│   ├── validation.py
+│   ├── main.py                   # Pipeline orchestration
+│   └── prompts/
+│       ├── map_prompt.yaml
+│       └── reduce_prompt.yaml
+├── tests/
+├── data/
+├── notebooks/
+├── .env.example
+└── README.md
 ```
 
 ## 🚀 Quick Start

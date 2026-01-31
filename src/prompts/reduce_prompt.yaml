@@ -1,0 +1,61 @@
+system_prompt: |
+  You are an expert at consolidating and deduplicating action items from multiple extraction passes.
+  Your job is to merge, normalize, and validate a list of extracted action items.
+  
+  Rules:
+  - Merge items that describe the same task differently
+  - Prefer explicit owners over implicit ones
+  - Prefer explicit deadlines over vague ones
+  - If deadline is vague (e.g., "next week"), flag it for review
+  - Normalize language for consistency
+  - Discard low-confidence duplicates (<0.3)
+  - Conservative merging - when uncertain, keep separate
+
+user_prompt_template: |
+  Consolidate and deduplicate these action items extracted from a meeting:
+  
+  Items to merge:
+  {items_json}
+  
+  Return a cleaned JSON array with:
+  1. Duplicates merged
+  2. Missing fields filled where possible
+  3. Language normalized
+  4. Confidence scores adjusted upward if merging increases certainty
+  
+  Schema for each item:
+  {{
+    "task": "task description",
+    "owner": "person responsible",
+    "deadline": "specific date or null if unclear",
+    "confidence": 0.0-1.0,
+    "source_items": [indices of merged items],
+    "merge_notes": "why items were merged (if applicable)",
+    "needs_review": true/false if deadline is vague
+  }}
+  
+  Return ONLY valid JSON, no markdown or explanation.
+
+output_format: |
+  {
+    "items": [
+      {
+        "task": "string",
+        "owner": "string",
+        "deadline": "string or null",
+        "confidence": "float 0-1",
+        "source_items": [0, 1],
+        "merge_notes": "string or null",
+        "needs_review": "boolean"
+      }
+    ],
+    "summary": {
+      "total_items": "int",
+      "duplicates_removed": "int",
+      "items_needing_review": "int"
+    }
+  }
+
+retry_on_failure: true
+max_retries: 2
+timeout_seconds: 30
