@@ -63,21 +63,22 @@ src/
 ├── __init__.py           # Package initialization
 ├── config.py             # Configuration & logging setup
 ├── models.py             # Pydantic data models
-├── transcript_processor.py  # Ingestion & chunking
-├── map_phase.py          # MAP phase (to implement)
-├── reduce_phase.py       # REDUCE phase (to implement)
-├── confidence_scorer.py  # Confidence layer (to implement)
-├── validation.py         # Edge cases (to implement)
-└── main.py               # Orchestration (to implement)
+├── document_loader.py    # LangChain Documents + metadata
+├── map_chain.py          # MAP chain (Prompt + LLM + Parser)
+├── reduce_chain.py       # REDUCE chain
+├── confidence_chain.py   # Confidence scoring chain
+├── validation.py         # Edge cases
+├── main.py               # Pipeline orchestration
+└── prompts/
+	├── map_prompt.yaml
+	└── reduce_prompt.yaml
 
 data/
 ├── example_transcript.txt  # Sample transcript
 └── outputs/              # Generated results
 
 tests/
-├── test_map_phase.py
-├── test_reduce_phase.py
-└── test_confidence_scorer.py
+└── __init__.py
 ```
 
 ## Next Steps
@@ -92,10 +93,7 @@ pytest tests/ -v
 pytest tests/ --cov=src --cov-report=html
 
 # Run specific test file
-pytest tests/test_map_phase.py -v
-
-# Run specific test
-pytest tests/test_map_phase.py::test_extraction -v
+pytest tests/ -k map -v
 ```
 
 ### Code Quality

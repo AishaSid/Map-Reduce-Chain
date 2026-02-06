@@ -18,7 +18,7 @@ Built a multi-stage Map–Reduce LLM pipeline using LangChain to extract and val
 
 ## 📁 Project Structure
 
-```bash
+```text
 Map-Reduce-Chain/
 ├── src/
 │   ├── config.py
@@ -107,19 +107,20 @@ pytest tests/ -v
 ### Extract from a transcript file
 
 ```python
-from src.main import extract_action_items
+from src.main import ActionItemExtractor
 
-items = extract_action_items("path/to/transcript.txt")
+extractor = ActionItemExtractor()
+items = extractor.extract("path/to/transcript.txt", "meeting_001")
 for item in items:
-    print(f"Task: {item.task}")
-    print(f"Owner: {item.owner}")
-    print(f"Confidence: {item.confidence}")
+     print(f"Task: {item.task}")
+     print(f"Owner: {item.owner}")
+     print(f"Confidence: {item.confidence}")
 ```
 
 ### Using the CLI
 
 ```bash
-python src/main.py process --input transcript.txt --output actions.json
+python src/main.py transcript.txt actions.json
 ```
 
 ### Using Streamlit UI
@@ -135,7 +136,7 @@ Edit `src/config.py` to customize:
 - `LOG_LEVEL`: DEBUG, INFO, WARNING, ERROR
 - `BATCH_SIZE`: Number of chunks to process at once
 - `CONFIDENCE_THRESHOLD`: Minimum confidence score (0-1)
-- `MODEL_NAME`: LLM to use (gpt-4, gpt-3.5-turbo)
+- `OPENAI_MODEL`: LLM to use (gpt-4, gpt-3.5-turbo)
 
 ## ✅ Testing
 
@@ -146,7 +147,7 @@ pytest tests/ -v
 
 Run specific test:
 ```bash
-pytest tests/test_map_phase.py -v
+pytest tests/ -k map -v
 ```
 
 With coverage:

@@ -1,4 +1,4 @@
-"""Transcript ingestion and chunking utilities."""
+"""Document loading and chunking utilities for transcripts."""
 
 from typing import List, Dict, Optional
 from langchain.schema import Document
@@ -9,12 +9,12 @@ from src.config import get_logger, CHUNK_SIZE_MINUTES, MAX_CHUNK_TOKENS
 logger = get_logger(__name__)
 
 
-class TranscriptProcessor:
-    """Process and chunk transcripts while preserving metadata."""
+class DocumentLoader:
+    """Load and chunk transcripts while preserving metadata."""
     
     def __init__(self, chunk_strategy: str = "speaker_turns"):
         """
-        Initialize the transcript processor.
+        Initialize the document loader.
         
         Args:
             chunk_strategy: "speaker_turns" or "time_based"
